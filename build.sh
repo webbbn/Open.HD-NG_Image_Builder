@@ -55,4 +55,15 @@ umount ${LOOP}p1
 umount ${LOOP}p2
 losetup -d ${LOOP}
 
-echo "Image written to: ${IMAGE_NAME}"
+# Run pishrink on the image to reduce the size
+./pishrink.sh "${IMAGE_NAME}"
+
+# Zipping and moving the image to the deploy directory
+if [ ! -d deploy ]; then
+    mkdir deploy
+fi
+zip deploy/"${IMAGE_NAME}.zip" "${IMAGE_NAME}"
+
+echo "Image creation complete:"
+ls -l "deploy/${IMAGE_NAME}.zip"
+
