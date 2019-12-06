@@ -81,14 +81,14 @@ cd /opt/vc/src/hello_pi/hello_video
 mv hello_video.bin hello_video.bin.240-befi
 
 #install JoystickIn
-apt-get --yes --force-yes install libsodium-dev
-cd /home/pi
-cd JoystickIn/JoystickIn
-wget --no-check-certificate https://mirror.wheel.sk/raspbian/raspbian/pool/main/libs/libsodium/libsodium-dev_1.0.11-2_armhf.deb
-dpkg -i libsodium-dev_1.0.11-2_armhf.deb
-make clean
-make
-mv processUDP ../processUDP
+#apt-get --yes --force-yes install libsodium-dev
+#cd /home/pi
+#cd JoystickIn/JoystickIn
+#wget --no-check-certificate https://mirror.wheel.sk/raspbian/raspbian/pool/main/libs/libsodium/libsodium-dev_1.0.11-2_armhf.deb
+#dpkg -i libsodium-dev_1.0.11-2_armhf.deb
+#make clean
+#make
+#mv processUDP ../processUDP
 
 #Configure scripts
 chmod 755 -R /home/pi/RemoteSettings

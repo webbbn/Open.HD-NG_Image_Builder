@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Source the config file
 . config
 
@@ -7,7 +9,7 @@
 if [ ! -f ${DL_IMAGE} ]; then
     echo "Downloading Raspbian image"
     wget ${BASE_IMAGE_URL}
-    unzip ${DL_IMAGE}.zip
+    unzip ${BASE_IMAGE}.zip
 fi
 
 # Create a larger image
@@ -26,7 +28,13 @@ LOOP=`losetup -P -f --show ${IMAGE_NAME}`
 echo "Checking the root partition and resizing it"
 e2fsck -y -f ${LOOP}p2
 resize2fs ${LOOP}p2 3200M
-mkdir -p ${IMAGE_ROOT}
+if [ ! -d ${IMAGE_ROOT} ]; then
+    mkdir -p ${IMAGE_ROOT}
+fi
+if [ -d "${STAGE_WORK_DIR}" ]; then
+    rm -rf "${STAGE_WORK_DIR}"
+fi
+mkdir "${STAGE_WORK_DIR}"
 
 # Mount the root and boot partition
 echo "Mounting the partitions"
