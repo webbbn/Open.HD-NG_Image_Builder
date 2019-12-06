@@ -15,8 +15,8 @@ jobs:
     - name: build
       run: |
         ./build.sh
-	mkdir deploy
-	mv Open*.img deploy
+        mkdir deploy
+        mv Open*.img deploy
     - name: upload-artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
