@@ -45,3 +45,14 @@ Large pieces of softare (e.g. the kernel) should have external build script, and
 
 That said, there is a script called 'run_step' that will run a single build step.
 It will execute the given script on the current state of the image, so it is up to the user to perform any cleanup, etc that is required prior to running the script.
+
+**Example:**
+~~~
+sudo ./run_step steps/20-system-setup.sh
+~~~
+
+Running the run_step script without specifying a script will execute a bash shell within the chroon environment, which can be very useful for identifyin issues and running installation lines one at a time.
+
+~~~
+sudo ./run_step
+~~~
