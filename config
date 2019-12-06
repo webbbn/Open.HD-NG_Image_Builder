@@ -1,0 +1,40 @@
+# Output image name
+IMG_NAME=Open.HD-NG
+
+# Download location base image
+BASE_IMAGE_URL="http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-09-30/2019-09-26-raspbian-buster-lite.zip"
+
+# File name base image
+BASE_IMAGE="2019-09-26-raspbian-buster-lite"
+
+# Amount of cores to use for compilation on host machine
+J_CORES=12
+
+# The output image name
+IMAGE_NAME=Open.HD-NG_`date +"%G-%m-%d"`.img
+
+OPENHD_REPO=https://github.com/infincia/Open.HD.git
+OPENHD_BRANCH=qopenhd
+
+
+QOPENHD_REPO=https://github.com/infincia/QOpenHD.git
+QOPENHD_VERSION=master
+
+
+QT_MAJOR_VERSION=5.13
+QT_MINOR_VERSION=1
+
+GSTREAMER_VERSION=1.14.4
+
+
+# Derived varianbles
+
+# IMAGE_ROOT points to the root directory of the image when not chrooted
+IMAGE_ROOT="${PWD}/root"
+MNT_DIR="${IMAGE_ROOT}"
+STAGE_WORK_DIR="${PWD}/work"
+mkdir "${STAGE_WORK_DIR}"
+DL_IMAGE="${BASE_IMAGE}.img"
+log () {
+    echo $*
+}
