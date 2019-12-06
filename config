@@ -33,7 +33,6 @@ GSTREAMER_VERSION=1.14.4
 IMAGE_ROOT="${PWD}/root"
 MNT_DIR="${IMAGE_ROOT}"
 STAGE_WORK_DIR="${PWD}/work"
-mkdir "${STAGE_WORK_DIR}"
 DL_IMAGE="${BASE_IMAGE}.img"
 log () {
     echo $*

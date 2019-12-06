@@ -14,18 +14,25 @@ fi
 # Copy the qemu binary into the root directory so we can run it when we chroot
 cp /usr/bin/qemu-arm-static ${IMAGE_ROOT}/usr/bin
 
-# Does this script require chroot?
-if [[ "${SCRIPT}" == *"chroot"* ]]; then
-    SCR=`basename "${SCRIPT}"`
-    cp ${SCRIPT} ${IMAGE_ROOT}/tmp
-    echo "Sourcing ${SCRIPT} in chroot"
-    chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /usr/bin/env /tmp/${SCR}
-    rm ${IMAGE_ROOT}/tmp/${SCR}
-    echo "Completed ${SCRIPT}"
+# Just bring up a chrootshell if no script is specified
+if [ -z "${SCRIPT}" ]; then
+    echo "No script specified. Executing a chroot shell. Exit or ctrl-d to get out of the shell."
+    chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /bin/bash
+    echo "Shell closed."
 else
-    echo "Sourcing ${SCRIPT}"
-    source ${SCRIPT}
-    echo "Completed ${SCRIPT}"
+    # Does this script require chroot?
+    if [[ "${SCRIPT}" == *"chroot"* ]]; then
+	SCR=`basename "${SCRIPT}"`
+	cp ${SCRIPT} ${IMAGE_ROOT}/tmp
+	echo "Sourcing ${SCRIPT} in chroot"
+	chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /usr/bin/env /tmp/${SCR}
+	rm ${IMAGE_ROOT}/tmp/${SCR}
+	echo "Completed ${SCRIPT}"
+    else
+	echo "Sourcing ${SCRIPT}"
+	source ${SCRIPT}
+	echo "Completed ${SCRIPT}"
+    fi
 fi
 
 # Unmount the partitions
