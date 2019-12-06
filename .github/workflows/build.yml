@@ -10,8 +10,8 @@ jobs:
     - uses: actions/checkout@v1
     - name: install-dependencies
       run: |
-        sudo apt-get update -qq
-        sudo apt-get -y unzip qemu-user-static
+        sudo apt-get update
+        sudo apt-get -y install unzip qemu-user-static
     - name: build
       run: |
         ./build.sh
