@@ -7,7 +7,7 @@ This build script has been tested on Ubuntu 18.04. It should work on other distr
 
 ## Install dependencies
 ~~~
-sudo apt install unzip qemu-user-static
+sudo apt install zip unzip qemu-user-static
 ~~~
 
 ## Build the firmware
@@ -19,7 +19,7 @@ sudo ./build.sh
 ~~~
 
 This script will download the selected base Raspbian Lite image, expand it a bit to support installation of the OpenHD software,
-perform some re-configuration, and create a script named *Open.HD-NG_<date>.img*.
+perform some re-configuration, and create a file named *deploy/Open.HD-NG_<date>.img.zip*.
 
 ## Explaination of the processing steps
 
@@ -56,3 +56,9 @@ Running the run_step script without specifying a script will execute a bash shel
 ~~~
 sudo ./run_step
 ~~~
+
+## Attribution
+
+This builder is inspired by the original [OpenHD builder](https://github.com/HD-Fpv/Open.HD_Image_Builder), which was inspired by [pi-gen](https://github.com/RPi-Distro/pi-gen).
+
+The pishrink script comes from [PiShrink](https://github.com/Drewsif/PiShrink).
