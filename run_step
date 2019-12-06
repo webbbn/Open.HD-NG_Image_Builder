@@ -1,0 +1,37 @@
+#!/bin/bash
+
+. config
+SCRIPT=$1
+
+# Mount the root and boot partition
+if [ ! -f ${IMAGE_ROOT}/boot ]; then
+   echo "Mounting the partitions"
+   LOOP=`losetup -P -f --show ${IMAGE_NAME}`
+   mount ${LOOP}p2 ${IMAGE_ROOT}
+   mount ${LOOP}p1 ${IMAGE_ROOT}/boot
+fi
+
+# Copy the qemu binary into the root directory so we can run it when we chroot
+cp /usr/bin/qemu-arm-static ${IMAGE_ROOT}/usr/bin
+
+# Does this script require chroot?
+if [[ "${SCRIPT}" == *"chroot"* ]]; then
+    SCR=`basename "${SCRIPT}"`
+    cp ${SCRIPT} ${IMAGE_ROOT}/tmp
+    echo "Sourcing ${SCRIPT} in chroot"
+    chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /usr/bin/env /tmp/${SCR}
+    rm ${IMAGE_ROOT}/tmp/${SCR}
+    echo "Completed ${SCRIPT}"
+else
+    echo "Sourcing ${SCRIPT}"
+    source ${SCRIPT}
+    echo "Completed ${SCRIPT}"
+fi
+
+# Unmount the partitions
+if [ ! -z "${LOOP}" ]; then
+    umount ${LOOP}p1
+    umount ${LOOP}p2
+    losetup -d ${LOOP}
+fi
+

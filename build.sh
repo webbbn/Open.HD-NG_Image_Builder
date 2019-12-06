@@ -1,16 +1,13 @@
 #!/bin/bash
 
-DL_IMAGE=2019-09-26-raspbian-buster-lite.img
-IMAGE_NAME=Open.HD-NG_`date +"%G-%m-%d"`.img
-
-# IMAGE_ROOT points to the root directory of the image when not chrooted
-IMAGE_ROOT=root
+# Source the config file
+. config
 
 # Download the raspberry pi image if necessary
 if [ ! -f ${DL_IMAGE} ]; then
     echo "Downloading Raspbian image"
-    wget http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-09-30/2019-09-26-raspbian-buster-lite.zip
-    unzip 2019-09-26-raspbian-buster-lite.zip
+    wget ${BASE_IMAGE_URL}
+    unzip ${DL_IMAGE}.zip
 fi
 
 # Create a larger image
@@ -29,33 +26,19 @@ LOOP=`losetup -P -f --show ${IMAGE_NAME}`
 echo "Checking the root partition and resizing it"
 e2fsck -y -f ${LOOP}p2
 resize2fs ${LOOP}p2 3200M
+mkdir -p ${IMAGE_ROOT}
 
 # Mount the root and boot partition
 echo "Mounting the partitions"
-rmdir root
-mkdir root
-mount ${LOOP}p2 root
-mount ${LOOP}p1 root/boot
+mount ${LOOP}p2 ${IMAGE_ROOT}
+mount ${LOOP}p1 ${IMAGE_ROOT}/boot
 
 # Copy the qemu binary into the root directory so we can run it when we chroot
 cp /usr/bin/qemu-arm-static ${IMAGE_ROOT}/usr/bin
 
 # Loop through all the build steps
 for SCRIPT in steps/*.sh; do
-
-    # Does this script require chroot?
-    if [[ "${SCRIPT}" == *"chroot"* ]]; then
-	SCR=`basename "${SCRIPT}"`
-	cp ${SCRIPT} ${IMAGE_ROOT}/tmp
-	echo "Sourcing ${SCRIPT} in chroot"
-        chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /usr/bin/env /tmp/${SCR}
-	rm ${IMAGE_ROOT}/tmp/${SCR}
-	echo "Completed ${SCRIPT}"
-    else
-	echo "Sourcing ${SCRIPT}"
-	source ${SCRIPT}
-	echo "Completed ${SCRIPT}"
-    fi
+    ./run_step ${SCRIPT}
 done
 rm -rf ${IMAGE_ROOT}/tmp/*
 
