@@ -65,5 +65,4 @@ fi
 zip deploy/"${IMAGE_NAME}.zip" "${IMAGE_NAME}"
 
 echo "Image creation complete:"
-ls -l "deploy/${IMAGE_NAME}.zip"
-
+ls -lh "deploy/${IMAGE_NAME}.zip"

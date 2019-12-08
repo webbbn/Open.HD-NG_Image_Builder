@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This runs in context if the image (CHROOT)
 # Any native compilation can be done here
 # Do not use log here, it will end up in the image
@@ -7,76 +9,76 @@
 # Install OpenVG
 cd /home/pi
 cd openvg
-sudo make clean
-sudo make library
-sudo make install
+make clean
+make library
+make install
 
 # Install FLIROne Driver
 cd /home/pi
 cd Open.HD_FlirOneDrv
 cd flir8p1-gpl
-sudo make
-sudo chmod +x flir8p1
+make
+chmod +x flir8p1
 
 # install wifibroadcast base
 cd /home/pi
 cd wifibroadcast-base
-sudo make clean
-sudo make
+make clean
+make
 
 #install wifibroadcast-rc
 cd /home/pi
 cd wifibroadcast-rc
-sudo chmod +x build.sh
+chmod +x build.sh
 
 #install wifibroadcast-status
 cd /home/pi
 cd wifibroadcast-status
-sudo make clean
-sudo make
+make clean
+make
 
 #install wifibroadcast-scripts
 cd /home/pi
 cd wifibroadcast-scripts
 # Copy to root so it runs on startup
-sudo cp .profile /root/
+cp .profile /root/
 
 #install wifibroadcast-misc
 cd /home/pi
 cd wifibroadcast-misc
-sudo chmod +x ftee
+chmod +x ftee
 #raspi2png was not working and had to be compiled
-#sudo chmod +x raspi2png
+#chmod +x raspi2png
 
 #install wifibroadcast-splash
 cd /home/pi
 cd wifibroadcast-splash
-sudo make
+make
 
 #patch hello_video
 cd /home/pi
-sudo cp wifibroadcast-hello_video/* /opt/vc/src/hello_pi/hello_video/
+cp wifibroadcast-hello_video/* /opt/vc/src/hello_pi/hello_video/
 # REBUILDING DOES NOT WORK, BINARIES INCLUDED IN GIT
 cd /opt/vc/src/hello_pi/hello_video
-sudo rm hello_video.bin.48-mm 2> /dev/null || echo > /dev/null
-sudo rm hello_video.bin.30-mm 2> /dev/null || echo > /dev/null
-sudo rm hello_video.bin.240-befi 2> /dev/null || echo > /dev/null
+rm hello_video.bin.48-mm 2> /dev/null || echo > /dev/null
+rm hello_video.bin.30-mm 2> /dev/null || echo > /dev/null
+rm hello_video.bin.240-befi 2> /dev/null || echo > /dev/null
 
-sudo cp video.c.48-mm video.c
+cp video.c.48-mm video.c
 cd ..
-sudo make
+make
 cd /opt/vc/src/hello_pi/hello_video
 mv hello_video.bin hello_video.bin.48-mm
 
-sudo cp video.c.30-mm video.c
+cp video.c.30-mm video.c
 cd ..
-sudo make
+make
 cd /opt/vc/src/hello_pi/hello_video
 mv hello_video.bin hello_video.bin.30-mm
 
-sudo cp video.c.240-befi video.c
+cp video.c.240-befi video.c
 cd ..
-sudo make
+make
 cd /opt/vc/src/hello_pi/hello_video
 mv hello_video.bin hello_video.bin.240-befi
 
@@ -113,20 +115,20 @@ chmod 755 version.py
 make
 ./wfb_keygen
 
-sudo chmod 775 /home/pi/wifibroadcast-rc-Ath9k/rctxUDP.sh
-sudo chmod 775 /home/pi/wifibroadcast-rc-Ath9k/rctxUDP_IN
+chmod 775 /home/pi/wifibroadcast-rc-Ath9k/rctxUDP.sh
+chmod 775 /home/pi/wifibroadcast-rc-Ath9k/rctxUDP_IN
 
-sudo chmod 775 /home/pi/wifibroadcast-rc/rctxUDP.sh
-sudo chmod 775 /home/pi/wifibroadcast-rc/rctxUDP_IN
+chmod 775 /home/pi/wifibroadcast-rc/rctxUDP.sh
+chmod 775 /home/pi/wifibroadcast-rc/rctxUDP_IN
 
 cd /home/pi/wifibroadcast-rc-Ath9k
-sudo chmod 775 /home/pi/wifibroadcast-rc-Ath9k/buildlora.sh
-sudo /home/pi/wifibroadcast-rc-Ath9k/buildlora.sh
-sudo chmod 775 /home/pi/wifibroadcast-rc-Ath9k/lora
+chmod 775 /home/pi/wifibroadcast-rc-Ath9k/buildlora.sh
+/home/pi/wifibroadcast-rc-Ath9k/buildlora.sh
+chmod 775 /home/pi/wifibroadcast-rc-Ath9k/lora
 
 
 cd /home/pi/wifibroadcast-misc/LCD
-sudo make
+make
 chmod 755 /home/pi/wifibroadcast-misc/LCD/MouseListener
 
 # rm /etc/init.d/dnsmasq
