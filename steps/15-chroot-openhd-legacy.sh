@@ -1,21 +1,30 @@
+#!/bin/bash
 
+set -e
+
+. ./config
 
 # Do this to the WORK folder of this stage
-pushd ${STAGE_WORK_DIR}
+cd ${STAGE_WORK_DIR}
 
-rm -rf GIT
+log "Removing old GIT dir"
+rm -r GIT || true
+
 mkdir -p GIT
 
-pushd GIT
+cd GIT
+
+MNT_DIR="${STAGE_WORK_DIR}/mnt"
 
 log "Download all Open.HD Sources"
 git clone -b master ${OPENHD_REPO}
-pushd Open.HD
-git checkout ${OPENHD_BRANCH}
-git submodule update --init
-OPENHD_VERSION=$(git describe --always --tags)
-export OPENHD_VERSION
-popd
+(
+    cd Open.HD
+    git checkout ${OPENHD_BRANCH}
+    git submodule update --init
+    OPENHD_VERSION=$(git describe --always --tags)
+    export OPENHD_VERSION
+)
 
 # store the commit used for the Open.HD repo as we as the builder inside the image
 # to allow tracing problems and changes back to the source, even if the image is renamed
@@ -23,7 +32,7 @@ echo ${OPENHD_VERSION} > ${MNT_DIR}/openhd_version.txt
 echo ${BUILDER_VERSION} > ${MNT_DIR}/builder_version.txt
 # copy the Open.HD repo version back down to the work folder so build.sh can retrieve it and use it
 # in the name of the image being built
-cp ${MNT_DIR}/openhd_version.txt "${IMAGE_ROOT}"
+cp ${MNT_DIR}/openhd_version.txt ${STAGE_WORK_DIR}/../
 
 log "Download OpenVG"
 mv Open.HD/openvg/ openvg/
@@ -99,19 +108,10 @@ git checkout ${QOPENHD_VERSION} || exit 1
 git submodule update --init --recursive
 echo ${OPENHD_VERSION} > .openhd_version
 echo ${BUILDER_VERSION} > .builder_version
-cd ..
-
-#return
-popd
-popd
-
 
 # Do this to the WORK folder of this stage
-pushd ${STAGE_WORK_DIR}
+cd ${STAGE_WORK_DIR}
 
 log "Copy all WFB Sources to RPi image"
 
-cp -r GIT/. "${IMAGE_ROOT}/home/pi/"
-
-#return
-popd
+cp -r GIT/. "$MNT_DIR/home/pi/"

@@ -1,23 +1,18 @@
 #!/bin/bash
 
-KERNELV6_URL=https://github.com/webbbn/Open.HD-Kernel-Builder/releases/download/v0.1/kernel-4.19.86+.tar.gz
-KERNELV7_URL=https://github.com/webbbn/Open.HD-Kernel-Builder/releases/download/v0.1/kernel-4.19.86-v7+.tar.gz
+KERNELS_URL=https://github.com/webbbn/Open.HD-Kernel-Builder/suites/347424377/artifacts/594383
 
 # Download the kernels
 cd /tmp
-echo "Downloading: ${KERNELV6_URL}"
-wget "${KERNELV6_URL}"
-echo "Downloading: ${KERNELV7_URL}"
-wget "${KERNELV7_URL}"
-KERNELV6=${KERNELV7_URL##*/}
-KERNELV7=${KERNELV7_URL##*/}
+echo "Downloading: ${KERNES_URL}"
+wget -O kernels.zip "${KERNELS_URL}"
 
-# Untar the kernels on the image
-echo "Untaring: ${KERNELV6}"
-tar -C / -xf "${KERNELV6}"
-echo "Untaring: ${KERNELV7}"
-tar -C / -xf "${KERNELV7}"
+# Unzip the kernels on the image
+unzip kernels.zip
+
+# Install the kernels
+tar -C / -xxf kernels/kernels.tar.gz
 
 # Cleanup
-echo "Removing: ${KERNELV6} ${KERNELV6}"
-rm ${KERNELV} ${KERNELV7}
+echo "Removing: kernels.zip and kernels"
+rm -rf kernels.zip kernels
