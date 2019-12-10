@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Copy the overlay files
-cp -r files/overlay/* ${IMAGE_ROOT}
-
 # Change the hostname
 sed -i 's/raspberrypi/openhd-ng/g' ${IMAGE_ROOT}/etc/hosts
 sed -i 's/raspberrypi/openhd-ng/g' ${IMAGE_ROOT}/etc/hostname
