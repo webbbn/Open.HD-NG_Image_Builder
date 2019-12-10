@@ -22,9 +22,9 @@ DATARATE=4
 
 # # >>>>>>>>>>[MCS ; Space Time Block Coding ; Low Density Parity Check]
 # Only tested MCS+STBC+LDPC with RTL8812AU cards. MCS=Y only should work with Atheros cards when STBC/LDPC=N 
-UseMCS=N
-UseSTBC=N
-UseLDPC=N
+UseMCS=Y
+UseSTBC=Y
+UseLDPC=Y
 
 # # >>>>>>>>>>[IP/USB CAMERA SECONDARY DATA RATES]
 # Applied only to 8812AU with 2nd IP/USB cam, all other setups, ignore! Ath9k will ignore secondary camera datarate and use DATARATE=
@@ -164,10 +164,29 @@ ETHERNET_HOTSPOT=N
 FORWARD_STREAM=rtp
 
 # >>>>>>>>>>[UDP PORT SETUP]--
+
+# The UDP host and port that video will be output to
 # UDP port to send video stream to, set to 5000 for FPV_VR app or 5600 for Mission Planner/QGC
+# NOTE: The default is to send video to localhost (127.0.0.1) and port 5600, which is the default for QOpenHD
+VIDEO_UDP_HOST=127.0.0.1
 VIDEO_UDP_PORT=5600
+
 # *EXPERIMENTAL* Secondary IP/USB Camera UDP Port (DON'T CHANGE)
 VIDEO_UDP_PORT2=5601
+
+# The UDP host and port that telemtry will be output to
+# NOTE: The default is to send telemtry to localhost (127.0.0.1) and port 14550, which is the default for QOpenHD
+TELEMETRY_UDP_HOST=127.0.0.1
+TELEMETRY_UDP_PORT=14550
+
+# The UDP host and port that link status messages will be output to
+# NOTE: The default is to send link status messages to localhost (127.0.0.1) and port 5154, which is the default for QOpenHD
+LINK_STATUS_UDP_HOST=127.0.0.1
+LINK_STATUS_UDP_PORT=5154
+
+# The UDP port that telemtry/RC messages will be read from
+# NOTE: The default is to receive telemetry/RC messages on port 14551
+TELEMETRY_UP_UDP_PORT=14551
 
 
 
