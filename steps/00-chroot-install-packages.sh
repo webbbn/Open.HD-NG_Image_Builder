@@ -20,7 +20,8 @@ apt-get install -y \
 	indent \
 	git \
 	libsodium-dev \
-	wiringpi
+	wiringpi \
+	omxplayer
 apt-get remove -y \
 	firmware-atheros
 pip3 install pyric
