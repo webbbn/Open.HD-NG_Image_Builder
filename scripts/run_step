@@ -1,18 +1,19 @@
 #!/bin/bash
 
-. config
+SCRIPT_DIR=`dirname $0`
+BUILD_DIR=`dirname ${SCRIPT_DIR}`
+
 SCRIPT=$1
 
-# Mount the root and boot partition
-if [ ! -f ${IMAGE_ROOT}/boot ]; then
-   echo "Mounting the partitions"
-   LOOP=`losetup -P -f --show ${IMAGE_NAME}`
-   mount ${LOOP}p2 ${IMAGE_ROOT}
-   mount ${LOOP}p1 ${IMAGE_ROOT}/boot
-fi
+# Source the config file
+. ${BUILD_DIR}/config
 
-# Copy the qemu binary into the root directory so we can run it when we chroot
-cp /usr/bin/qemu-arm-static ${IMAGE_ROOT}/usr/bin
+# Download the image of necessary
+${BUILD_ROOT}/scripts/download_image
+
+# Prepare the image if necessary
+LOOP=`${BUILD_ROOT}/scripts/prepare_image`
+LOOP=`echo ${LOOP} | sed 's/.*LOOP=//g'`
 
 # Just bring up a chrootshell if no script is specified
 if [ -z "${SCRIPT}" ]; then
@@ -35,10 +36,7 @@ else
     fi
 fi
 
-# Unmount the partitions
-if [ ! -z "${LOOP}" ]; then
-    umount ${LOOP}p1
-    umount ${LOOP}p2
-    losetup -d ${LOOP}
-fi
+# Close the image
+./scripts/close_image ${LOOP}
+
 

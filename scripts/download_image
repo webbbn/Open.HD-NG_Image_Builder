@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Download the raspberry pi image if necessary
+if [ ! -f ${DL_IMAGE} ]; then
+    echo "Downloading Raspbian image"
+    wget ${BASE_IMAGE_URL}
+    unzip ${BASE_IMAGE}.zip
+fi

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+SCRIPT_DIR=`dirname $0`
+BUILD_DIR=`dirname ${SCRIPT_DIR}`
+. ${BUILD_DIR}/config
+
+# Run pishrink on the image to reduce the size
+${BUILD_ROOT}/scripts/pishrink.sh "${IMAGE_NAME}"
