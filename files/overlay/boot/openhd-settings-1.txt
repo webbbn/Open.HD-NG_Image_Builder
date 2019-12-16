@@ -182,7 +182,7 @@ TELEMETRY_UDP_PORT=14550
 # The UDP host and port that link status messages will be output to
 # NOTE: The default is to send link status messages to localhost (127.0.0.1) and port 5154, which is the default for QOpenHD
 LINK_STATUS_UDP_HOST=127.0.0.1
-LINK_STATUS_UDP_PORT=5154
+LINK_STATUS_UDP_PORT=5155
 
 # The UDP port that telemtry/RC messages will be read from
 # NOTE: The default is to receive telemetry/RC messages on port 14551

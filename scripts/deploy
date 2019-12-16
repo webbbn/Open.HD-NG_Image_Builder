@@ -1,0 +1,13 @@
+#!/bin/sh
+
+SCRIPT_DIR=`dirname $0`
+BUILD_DIR=`dirname ${SCRIPT_DIR}`
+. ${BUILD_DIR}/config
+
+DEPLOYDIR="${BUILD_ROOT}/deploy"
+
+# Zipping and moving the image to the deploy directory
+if [ ! -d "${DEPLOYDIR}" ]; then
+    mkdir "${DEPLOYDIR}"
+fi
+zip "${DEPLOYDIR}/${IMAGE_NAME}.zip" "${IMAGE_NAME}"

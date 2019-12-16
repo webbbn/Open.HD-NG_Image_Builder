@@ -1,0 +1,50 @@
+#!/bin/sh
+
+SCRIPT_DIR=`dirname $0`
+BUILD_DIR=`dirname ${SCRIPT_DIR}`
+. ${BUILD_DIR}/config
+
+# Don't do anything if the image already exists
+if [ ! -f ${IMAGE_NAME} ]; then
+
+    # Create a larger image
+    echo "Creating the initial image from the downloaded copy and expanding it" 1>&2
+    fallocate -l 6000M ${IMAGE_NAME}
+    dd conv=notrunc if=${DL_IMAGE} of=${IMAGE_NAME}
+
+    # Resize the root partition
+    echo "Resizing the root partion of: ${IMAGE_NAME}" 1>&2
+    parted --script ${IMAGE_NAME} resizepart 2 100% 1>&2
+
+    # Connect the image to a loopback device
+    LOOP=`losetup -P -f --show ${IMAGE_NAME}`
+
+    # Resize the root filesystem
+    echo "Checking the root partition and resizing it" 1>&2
+    e2fsck -y -f ${LOOP}p2
+    resize2fs ${LOOP}p2 1>&2
+    if [ ! -d ${IMAGE_ROOT} ]; then
+	mkdir -p ${IMAGE_ROOT}
+    fi
+    if [ -d "${STAGE_WORK_DIR}" ]; then
+	rm -rf "${STAGE_WORK_DIR}"
+    fi
+    mkdir "${STAGE_WORK_DIR}"
+
+else
+
+    # Connect the image to a loopback device
+    LOOP=`losetup -P -f --show ${IMAGE_NAME}`
+
+fi
+
+# Mount the root and boot partition
+echo "Mounting the partitions" 1>&2
+mount ${LOOP}p2 ${IMAGE_ROOT}
+mount ${LOOP}p1 ${IMAGE_ROOT}/boot
+
+# Copy the qemu binary into the root directory so we can run it when we chroot
+cp /usr/bin/qemu-arm-static ${IMAGE_ROOT}/usr/bin
+
+# Return the loop device
+echo "LOOP=${LOOP}"

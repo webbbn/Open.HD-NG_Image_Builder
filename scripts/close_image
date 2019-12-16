@@ -1,0 +1,10 @@
+#!/bin/sh
+
+LOOP=$1
+
+# Unmount the partitions
+if [ ! -z "${LOOP}" ]; then
+    umount ${LOOP}p1
+    umount ${LOOP}p2
+    losetup -d ${LOOP}
+fi
