@@ -20,6 +20,10 @@ if [ -z "${SCRIPT}" ]; then
     echo "No script specified. Executing a chroot shell. Exit or ctrl-d to get out of the shell."
     chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /bin/bash
     echo "Shell closed."
+elif [ "${SCRIPT}" == "-n" ]; then
+    echo "No chroot (-n) specified. Just executing a shell. Exit or ctrl-d to get out of the shell."
+    /bin/bash
+    echo "Shell closed."
 else
     # Does this script require chroot?
     if [[ "${SCRIPT}" == *"chroot"* ]]; then

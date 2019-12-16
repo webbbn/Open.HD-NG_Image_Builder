@@ -2,66 +2,31 @@
 
 set -e
 
+apt-get install -y wget
+
 # Clone the cross-compiler repository
 echo "Downloading raspberry pi tools"
-git clone https://github.com/raspberrypi/tools
+if [ ! -d tools ]; then
+    git clone https://github.com/raspberrypi/tools
+fi
+
+# Download the source tarball
+echo "Downloading the Qt source tarball"
+if [ ! -f qt-everywhere-src-5.13.2.tar.xz ]; then
+    wget https://download.qt.io/archive/qt/5.13/5.13.2/single/qt-everywhere-src-5.13.2.tar.xz
+fi
+
+# Extract the tarball
+if [ -d qt-everywhere-src-5.13.2 ]; then
+    rm -rf qt-everywhere-src-5.13.2
+fi
+tar xf qt-everywhere-src-5.13.2.tar.xz
 
 # Build and install Qt Base
-echo "Building qtbase"
-git clone git://code.qt.io/qt/qtbase.git -b 5.13.2
+echo "Building Qt"
 (
-    cd qtbase
+    cd qt-everywhere-src-5.13.2
     ./configure -release -opengl es2 -device linux-rasp-pi-g++ -device-option CROSS_COMPILE=${WORKDIR}/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf- -sysroot /opt/sysroot -opensource -confirm-license -make libs -prefix /opt/Qt/5.13.2 -extprefix ${WORKDIR}/5.13.2 -hostprefix ${WORKDIR}/host_tools -v -no-use-gold-linker
-    make -j 4
-    make install
-)
-
-# Build and install qtquick
-echo "Building qtdeclarative"
-git clone https://code.qt.io/cgit/qt/qtdeclarative.git -b 5.13.2
-(
-    cd qtdeclarative
-    ${WORKDIR}/host_tools/bin/qmake
-    make -j 4
-    make install
-)
-
-# Build and install qtquick controls
-echo "Building qtquickcontrols"
-git clone https://code.qt.io/cgit/qt/qtquickcontrols.git -b 5.13.2
-(
-    cd qtquickcontrols
-    ${WORKDIR}/host_tools/bin/qmake
-    make -j 4
-    make install
-)
-
-# Build and install qtquick controls
-echo "Building qtquickcontrols2"
-git clone https://code.qt.io/cgit/qt/qtquickcontrols2.git -b 5.13.2
-(
-    cd qtquickcontrols2
-    ${WORKDIR}/host_tools/bin/qmake
-    make -j 4
-    make install
-)
-
-# Build and install qt graphical effects
-echo "Building qtkgraphicaleffects"
-git clone https://code.qt.io/cgit/qt/qtgraphicaleffects.git -b 5.13.2
-(
-    cd qtgraphicaleffects
-    ${WORKDIR}/host_tools/bin/qmake
-    make -j 4
-    make install
-)
-
-# Build and install qt location
-echo "Building qtlocation"
-git clone https://code.qt.io/cgit/qt/qtlocation.git/ -b 5.13.2
-(
-    cd qtlocation
-    ${WORKDIR}/host_tools/bin/qmake
     make -j 4
     make install
 )
