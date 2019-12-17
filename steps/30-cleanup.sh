@@ -30,6 +30,16 @@ apt-get remove -y \
   libxkbcommon-x11-dev \
   libxmu-dev \
   libxslt1-dev \
-  libxv-dev
+  libxv-dev \
+  avahi-daemon \
+  exim4 \
+  libraspberrypi-doc \
+
+# Remove the bluetooth service, which can take CPU resources
+apt-get purge bluez -y
+
+# Remove the apt-get cache
+apt-get clean
+apt-get autoclean
 
 apt-get autoremove -y
