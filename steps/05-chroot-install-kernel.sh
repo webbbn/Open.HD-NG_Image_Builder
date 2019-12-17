@@ -13,6 +13,12 @@ unzip kernels.zip
 # Install the kernels
 tar -C / -xxf kernels/kernels.tar.gz
 
+# Install the dual camera blob.
+cd /boot
+wget http://wiki.stereopi.com/files/dt-blob.bin.zip
+unzip dt-blob.bin.zip
+rm dt-blob.bin.zip
+
 # Cleanup
 echo "Removing: kernels.zip and kernels"
 rm -rf kernels.zip kernels
