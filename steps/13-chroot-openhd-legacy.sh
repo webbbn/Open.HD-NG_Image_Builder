@@ -4,33 +4,17 @@
 # Any native compilation can be done here
 cd /home/pi
 
-# Patch hello_video
-(
-    cp wifibroadcast-hello_video/* /opt/vc/src/hello_pi/hello_video/
-    # REBUILDING DOES NOT WORK, BINARIES INCLUDED IN GIT
-    cd /opt/vc/src/hello_pi/hello_video
-    rm hello_video.bin.48-mm 2> /dev/null || echo > /dev/null
-    rm hello_video.bin.30-mm 2> /dev/null || echo > /dev/null
-    rm hello_video.bin.240-befi 2> /dev/null || echo > /dev/null
-
-    cp video.c.48-mm video.c
-    cd ..
-    make
-    cd /opt/vc/src/hello_pi/hello_video
-    mv hello_video.bin hello_video.bin.48-mm
-
-    cp video.c.30-mm video.c
-    cd ..
-    make
-    cd /opt/vc/src/hello_pi/hello_video
-    mv hello_video.bin hello_video.bin.30-mm
-
-    cp video.c.240-befi video.c
-    cd ..
-    make
-    cd /opt/vc/src/hello_pi/hello_video
-    mv hello_video.bin hello_video.bin.240-befi
-)
+# Build the hello_video programs
+make -C /opt/vc/src/hello_pi clean
+cp wifibroadcast-hello_video/video.c.30-mm /opt/vc/src/hello_pi/hello_video/video.c
+make -C /opt/vc/src/hello_pi
+mv -f /opt/vc/src/hello_pi/hello_video/hello_video.bin wifibroadcast-hello_video/hello_video.bin.30-mm
+cp wifibroadcast-hello_video/video.c.48-mm /opt/vc/src/hello_pi/hello_video/video.c
+make -C /opt/vc/src/hello_pi
+mv -f /opt/vc/src/hello_pi/hello_video/hello_video.bin wifibroadcast-hello_video/hello_video.bin.48-mm
+cp wifibroadcast-hello_video/video.c.240-befi /opt/vc/src/hello_pi/hello_video/video.c
+make -C /opt/vc/src/hello_pi
+mv -f /opt/vc/src/hello_pi/hello_video/hello_video.bin wifibroadcast-hello_video/hello_video.bin.240-befi
 
 #################################################################
 # NOTE: In order to save space in the image we're only going
