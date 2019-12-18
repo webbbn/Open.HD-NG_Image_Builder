@@ -7,7 +7,7 @@ dpkg -i deb-files/buster-armhf/wifibroadcast_bridge_*.deb
 rm -rf deb-files*
 
 # Install the openhd package
-wget -O deb-files.zip https://github.com/webbbn/Open.HD-NG/suites/363868282/artifacts/741238
+wget -O deb-files.zip https://github.com/webbbn/Open.HD-NG/suites/365127043/artifacts/752063
 unzip deb-files.zip
 dpkg -i deb-files/buster-armhf/open.hd-ng_*.deb
 rm -rf deb-files*
