@@ -9,7 +9,7 @@ if [ ! -f ${IMAGE_NAME} ]; then
 
     # Create a larger image
     echo "Creating the initial image from the downloaded copy and expanding it" 1>&2
-    fallocate -l 6000M ${IMAGE_NAME}
+    fallocate -l ${INITIAL_IMAGE_SIZE} ${IMAGE_NAME}
     dd conv=notrunc if=${DL_IMAGE} of=${IMAGE_NAME}
 
     # Resize the root partition
@@ -31,20 +31,11 @@ if [ ! -f ${IMAGE_NAME} ]; then
     fi
     mkdir "${STAGE_WORK_DIR}"
 
-else
+    # Mount the root partition and copy the qemu binary into the image
+    mount ${LOOP}p2 ${IMAGE_ROOT}
+    cp /usr/bin/qemu-arm-static ${IMAGE_ROOT}/usr/bin
 
-    # Connect the image to a loopback device
-    LOOP=`losetup -P -f --show ${IMAGE_NAME}`
-
+    # Unmount the root partition and remove the loopback device
+    umount ${LOOP}p2
+    losetup -d ${LOOP}
 fi
-
-# Mount the root and boot partition
-echo "Mounting the partitions" 1>&2
-mount ${LOOP}p2 ${IMAGE_ROOT}
-mount ${LOOP}p1 ${IMAGE_ROOT}/boot
-
-# Copy the qemu binary into the root directory so we can run it when we chroot
-cp /usr/bin/qemu-arm-static ${IMAGE_ROOT}/usr/bin
-
-# Return the loop device
-echo "LOOP=${LOOP}"

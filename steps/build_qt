@@ -26,7 +26,48 @@ tar xf qt-everywhere-src-5.13.2.tar.xz
 echo "Building Qt"
 (
     cd qt-everywhere-src-5.13.2
-    ./configure -release -opengl es2 -device linux-rasp-pi-g++ -device-option CROSS_COMPILE=${WORKDIR}/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf- -sysroot /opt/sysroot -opensource -confirm-license -make libs -prefix /opt/Qt/5.13.2 -extprefix ${WORKDIR}/5.13.2 -hostprefix ${WORKDIR}/host_tools -v -no-use-gold-linker
+    ./configure \
+	-release \
+	-opengl es2 \
+	-device linux-rasp-pi-g++ \
+	-device-option CROSS_COMPILE=${WORKDIR}/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf- \
+	-sysroot /opt/sysroot \
+	-opensource \
+	-confirm-license \
+	-make libs \
+	-prefix /opt/Qt/5.13.2 \
+	-extprefix ${WORKDIR}/5.13.2 \
+	-hostprefix ${WORKDIR}/host_tools \
+	-v \
+	-no-use-gold-linker \
+	-force-pkg-config \
+	-nomake examples \
+	-no-compile-examples \
+	-skip qtcharts \
+	-skip qtdatavis3d \
+	-skip qtwayland \
+	-skip qtwebengine \
+	-skip qtconnectivity \
+	-skip qtxmlpatterns \
+	-skip qtsensors \
+	-skip qtpurchasing \
+	-skip qtnetworkauth \
+	-skip qtwebchannel \
+	-skip qtwebsockets \
+	-skip qtwebview \
+	-no-feature-cups \
+	-no-feature-testlib \
+	-no-feature-dbus \
+	-no-feature-vnc \
+	-no-sql-sqlite \
+	-no-compile-examples \
+	-no-feature-xlib \
+	-no-xcb \
+	-qt-pcre \
+	-no-pch \
+	-evdev \
+	-system-freetype \
+	-glib
     make -j 4
     make install
 )

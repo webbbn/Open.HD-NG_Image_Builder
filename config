@@ -5,6 +5,11 @@ export BUILD_ROOT=${BUILD_ROOT:-$PWD}
 # Output image name
 export IMG_NAME=Open.HD-NG
 
+# The size that the image is resized to prior to installation
+# This needs to be large enough for temporary files, etc
+# The image will be shrunk as the final step
+export INITIAL_IMAGE_SIZE=6000M
+
 # Download location base image
 export BASE_IMAGE_URL="http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-09-30/2019-09-26-raspbian-buster-lite.zip"
 

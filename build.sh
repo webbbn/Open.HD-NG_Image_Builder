@@ -8,6 +8,9 @@ set -e
 # Download the image of necessary
 ${BUILD_ROOT}/scripts/download_image
 
+# Prepare a copy of the downloaded image
+${BUILD_ROOT}/scripts/prepare_image
+
 # Loop through all the build steps
 for SCRIPT in steps/*.sh; do
     ${BUILD_ROOT}/scripts/run_step ${SCRIPT}
