@@ -12,8 +12,7 @@ SCRIPT=$1
 ${BUILD_ROOT}/scripts/download_image
 
 # Prepare the image if necessary
-LOOP=`${BUILD_ROOT}/scripts/prepare_image`
-LOOP=`echo ${LOOP} | sed 's/.*LOOP=//g'`
+LOOP=`${BUILD_ROOT}/scripts/mount_image`
 
 # Just bring up a chrootshell if no script is specified
 if [ -z "${SCRIPT}" ]; then
@@ -41,6 +40,4 @@ else
 fi
 
 # Close the image
-./scripts/close_image ${LOOP}
-
-
+${BUILD_ROOT}/scripts/close_image ${LOOP}

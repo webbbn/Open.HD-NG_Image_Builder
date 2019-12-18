@@ -32,8 +32,7 @@ apt-get remove -y \
   libxslt1-dev \
   libxv-dev \
   avahi-daemon \
-  exim4 \
-  libraspberrypi-doc \
+  exim4
 
 # Remove the bluetooth service, which can take CPU resources
 apt-get purge bluez -y

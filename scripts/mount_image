@@ -1,0 +1,16 @@
+#!/bin/sh
+
+SCRIPT_DIR=`dirname $0`
+BUILD_DIR=`dirname ${SCRIPT_DIR}`
+. ${BUILD_DIR}/config
+
+# Connect the image to a loopback device
+LOOP=`losetup -P -f --show ${IMAGE_NAME}`
+
+# Mount the root and boot partition
+echo "Mounting the partitions" 1>&2
+mount ${LOOP}p2 ${IMAGE_ROOT}
+mount ${LOOP}p1 ${IMAGE_ROOT}/boot
+
+# Return the loop device
+echo "${LOOP}"
