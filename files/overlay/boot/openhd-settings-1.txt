@@ -11,7 +11,7 @@ FREQ=2472
 
 # >>>>>>>>>>[DATARATE] Lower settings yield higher range and vice versa.  
 # Below are the datarate settings for Legacy B/G and MCS "N" modes. 
-DATARATE=4
+DATARATE=2
 
 # 1 - 5.5   =    802.11b         1 - 6.5   =     MCS 0
 # 2 - 11    =    802.11b         2 - 13    =     MCS 1
@@ -22,9 +22,9 @@ DATARATE=4
 
 # # >>>>>>>>>>[MCS ; Space Time Block Coding ; Low Density Parity Check]
 # Only tested MCS+STBC+LDPC with RTL8812AU cards. MCS=Y only should work with Atheros cards when STBC/LDPC=N 
-UseMCS=Y
-UseSTBC=Y
-UseLDPC=Y
+UseMCS=N
+UseSTBC=N
+UseLDPC=N
 
 # # >>>>>>>>>>[IP/USB CAMERA SECONDARY DATA RATES]
 # Applied only to 8812AU with 2nd IP/USB cam, all other setups, ignore! Ath9k will ignore secondary camera datarate and use DATARATE=
