@@ -11,7 +11,7 @@ wget -O kernels.zip "${KERNELS_URL}"
 unzip kernels.zip
 
 # Install the kernels
-tar -C / -xxf kernels/kernels.tar.gz
+tar -C / -xf kernels/kernels.tar.gz
 
 # Cleanup
 echo "Removing: kernels.zip and kernels"
