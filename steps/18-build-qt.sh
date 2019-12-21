@@ -16,7 +16,7 @@ mkdir -p ${STAGE_WORK_DIR}/QtBuild
     cp ${STEPS_DIR}/build_qt ${STAGE_WORK_DIR}/QtBuild
 
     # Run the build Qt script using a docker image built for cross-compiling Qt
-    docker run -v "${PWD}":/workdir webbbn/raspbian-buster-cross-compile .//build_qt
+    docker run -v "${PWD}":/workdir webbbn/raspbian-buster-cross-compile .//build_qt "${QTVERSION}" "${QOPENHD_REPO}" "${QOPENHD_BRANCH}"
 
     # The Qt Installations should be in the 5.13.2 directory, and QOpenHD will be in the QOpenHD directory
     mkdir -p ${QT_DIR}

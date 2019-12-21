@@ -28,7 +28,8 @@ apt-get install -y \
 	libmtdev1 \
 	libinput10 \
 	libts0 \
-	libxkbcommon0
+	libxkbcommon0 \
+	firmware-ath9k-htc
 apt-get remove -y \
 	firmware-atheros
 pip3 install pyric

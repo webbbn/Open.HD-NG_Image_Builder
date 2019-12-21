@@ -1,13 +1,22 @@
 #!/bin/bash
 
 # Install thw wifibroadcast_bridge package
-wget -O deb-files.zip https://github.com/webbbn/wifibroadcast_bridge/suites/363867671/artifacts/741234
-unzip deb-files.zip
-dpkg -i deb-files/buster-armhf/wifibroadcast_bridge_*.deb
-rm -rf deb-files*
+rm -rf wifibroadcast_bridge
+git clone https://github.com/webbbn/wifibroadcast_bridge.git
+(
+    cd wifibroadcast_bridge
+    ls -l scripts
+    ./scripts/mkdeb
+    dpkg -i build/*.deb
+)
+rm -rf wifibroadcast_bridge
 
 # Install the openhd package
-wget -O deb-files.zip https://github.com/webbbn/Open.HD-NG/suites/365127043/artifacts/752063
-unzip deb-files.zip
-dpkg -i deb-files/buster-armhf/open.hd-ng_*.deb
-rm -rf deb-files*
+rm -rf Open.HD-NG
+git clone https://github.com/webbbn/Open.HD-NG.git
+(
+    cd Open.HD-NG
+    ./scripts/mkdeb
+    dpkg -i build/*.deb
+)
+rm -rf Open.HD-NG

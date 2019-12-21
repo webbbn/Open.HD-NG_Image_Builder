@@ -22,8 +22,11 @@ exportJ_CORES=12
 # The output image name
 export IMAGE_NAME=Open.HD-NG_`date +"%G-%m-%d"`.img
 
-export OPENHD_REPO=https://github.com/infincia/Open.HD.git
-export OPENHD_BRANCH=qopenhd
+export OPENHD_REPO=https://github.com/HD-Fpv/Open.HD.git
+export OPENHD_BRANCH=master
+export QOPENHD_REPO=https://github.com/OpenHD/QOpenHD.git
+export QOPENHD_BRANCH=master
+export QTVERSION=5.13.2
 
 # IMAGE_ROOT points to the root directory of the image when not chrooted
 export IMAGE_ROOT="${PWD}/root"
