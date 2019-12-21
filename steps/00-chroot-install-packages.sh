@@ -3,6 +3,10 @@
 # This just causes error messages
 rm /etc/ld.so.preload
 
+# Remove the closed-source ath9k firmware
+apt-get remove -y \
+	firmware-atheros
+
 # Install dependencies
 apt-get update
 apt-get install -y \
@@ -30,8 +34,6 @@ apt-get install -y \
 	libts0 \
 	libxkbcommon0 \
 	firmware-ath9k-htc
-apt-get remove -y \
-	firmware-atheros
 pip3 install pyric
 pip3 install pymavlink
 
