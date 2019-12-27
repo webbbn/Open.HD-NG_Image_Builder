@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KERNELS_URL=https://github.com/webbbn/Open.HD-Kernel-Builder/suites/347424377/artifacts/594383
+KERNELS_URL=https://github.com/webbbn/Open.HD-Kernel-Builder/suites/374213945/artifacts/839463
 
 # Download the kernels
 cd /tmp

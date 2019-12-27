@@ -23,8 +23,5 @@ echo "gpu_mem=128" >> ${IMAGE_ROOT}/boot/config.txt
 sed -i '/disable_camera_led/d' ${IMAGE_ROOT}/boot/config.txt
 echo "disable_camera_led=1" >> ${IMAGE_ROOT}/boot/config.txt
 
-# Change the OpenHD UART to /dev/ttyS0
-sed -i 's/ttyS1/ttyS0/g' ${IMAGE_ROOT}/etc/default/openhd
-
 # Disable most automatic network configuration functions, which can interfere with the wifi devices.
 echo -e "auto lo\niface lo inet loopback\nauto eth0\nallow-hotplug eth0\niface eth0 inet manual\niface wlan0 inet manual\niface wlan1 inet manual\niface wlan2 inet manual" ${IMAGE_ROOT}/etc/network/interfaces

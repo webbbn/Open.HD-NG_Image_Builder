@@ -1,8 +1,14 @@
 #!/bin/sh
 
+if [ $# != 1 ]; then
+    echo "Usage: $0 <image file>" 1>&2
+fi
+
 SCRIPT_DIR=`dirname $0`
 BUILD_DIR=`dirname ${SCRIPT_DIR}`
 . ${BUILD_DIR}/config
+IMAGE_NAME=$1
+echo "Mounting image: ${IMAGE_NAME}" 1>&2
 
 # Connect the image to a loopback device
 LOOP=`losetup -P -f --show ${IMAGE_NAME}`

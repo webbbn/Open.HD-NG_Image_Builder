@@ -36,21 +36,21 @@ echo "Building Qt"
     cd qt-everywhere-src-${QTVER}
     ./configure \
 	-release \
-	-opengl es2 \
 	-device linux-rasp-pi-g++ \
 	-device-option CROSS_COMPILE=${WORKDIR}/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf- \
-	-sysroot /opt/sysroot \
-	-opensource \
-	-confirm-license \
-	-make libs \
 	-prefix /opt/Qt/${QTVER} \
 	-extprefix ${WORKDIR}/${QTVER} \
 	-hostprefix ${WORKDIR}/host_tools \
-	-v \
 	-no-use-gold-linker \
 	-force-pkg-config \
-	-nomake examples \
-	-no-compile-examples \
+	-sysroot /opt/sysroot \
+	-v \
+	-opengl es2 -eglfs \
+	-no-gtk \
+	-opensource -confirm-license -release \
+	-reduce-exports \
+	-force-pkg-config \
+	-nomake examples -no-compile-examples \
 	-skip qtcharts \
 	-skip qtdatavis3d \
 	-skip qtwayland \
@@ -63,6 +63,7 @@ echo "Building Qt"
 	-skip qtwebchannel \
 	-skip qtwebsockets \
 	-skip qtwebview \
+	-no-feature-sql \
 	-no-feature-cups \
 	-no-feature-testlib \
 	-no-feature-dbus \
@@ -73,8 +74,10 @@ echo "Building Qt"
 	-no-xcb \
 	-qt-pcre \
 	-no-pch \
+	-ssl \
 	-evdev \
 	-system-freetype \
+	-fontconfig \
 	-glib
     make -j 4
     make install

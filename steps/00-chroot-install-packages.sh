@@ -33,7 +33,11 @@ apt-get install -y \
 	libinput10 \
 	libts0 \
 	libxkbcommon0 \
-	firmware-ath9k-htc
+	firmware-ath9k-htc \
+	build-essential \
+	gstreamer1.0-plugins-ugly \
+	libqt5gstreamerquick-1.0-0
+
 pip3 install pyric
 pip3 install pymavlink
 

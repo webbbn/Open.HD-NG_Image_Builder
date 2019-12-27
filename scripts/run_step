@@ -3,7 +3,26 @@
 SCRIPT_DIR=`dirname $0`
 BUILD_DIR=`dirname ${SCRIPT_DIR}`
 
-SCRIPT=$1
+# Check for the options
+ARCHIVE=0
+RUN=1
+CHROOT=0
+if [ $# -gt 0 ]; then
+    if [ $1 == "-a" ]; then
+	ARCHIVE=1
+	shift
+    elif [ $1 == "-c" ]; then
+	RUN=0
+	CHROOT=1
+	shift
+    elif [ $1 == "-n" ]; then
+	RUN=0
+	shift
+    fi
+fi
+if [ $# -gt 0 ]; then
+    SCRIPT="$1"
+fi
 
 # Source the config file
 . ${BUILD_DIR}/config
@@ -12,31 +31,97 @@ SCRIPT=$1
 ${BUILD_ROOT}/scripts/download_image
 
 # Prepare the image if necessary
-LOOP=`${BUILD_ROOT}/scripts/mount_image`
+${BUILD_ROOT}/scripts/prepare_image
 
-# Just bring up a chrootshell if no script is specified
+# Ensure the script exists
 if [ -z "${SCRIPT}" ]; then
-    echo "No script specified. Executing a chroot shell. Exit or ctrl-d to get out of the shell."
+    echo "Usage: $0 [-c] [-n] | [-a] <step script>"
+    echo "  -c Only chroot (don't run script)"
+    echo "  -n Just mount the image (don't run script)"
+    echo "  -a Run the script as normal and create an archive image"
+    exit
+else
+    IBN=`basename "${IMAGE_NAME}" .img`
+    STEP=`basename "$1" .sh`
+    IMAGE_LINK="${BUILD_ROOT}/${IBN}--${STEP}.img"
+
+    # Remove the image/link for this step
+    if [ -f "${IMAGE_LINK}" ]; then
+	# Don't remove the image/link if we're just mounting the image.
+	if [ ${RUN} -eq 1 ]; then
+	    rm -f "${IMAGE_LINK}"
+	fi
+    fi
+
+    if [ ! -f "${IMAGE_LINK}" ]; then
+
+	# Running this step will invalidate later steps, so delete if they're links
+	RSTEPFILES=`echo steps/*.sh | xargs ls | tac`
+	FOUND=0
+	for STEPFILE in ${BUILD_ROOT}/steps/*.sh; do
+    	    CSTEP=`basename "${STEPFILE}" .sh`
+    	    if [ ${FOUND} -eq 1 ]; then
+    		CIMAGE_LINK="${BUILD_ROOT}/${IBN}--${CSTEP}.img"
+    		if [ -L "${CIMAGE_LINK}" ]; then
+    		    echo "Removing: ${CIMAGE_LINK}"
+    		    rm -f "${CIMAGE_LINK}"
+    		elif [ -f "${CIMAGE_LINK}" ]; then
+    		    echo "Preserving archived image (and beyond): ${CIMAGE_LINK}"
+    		    break
+    		fi
+    	    elif [ "${CIMAGE_LINK}" == "${IMAGE_LINK}" ]; then
+    		FOUND=1
+    	    fi
+	done
+
+	# We need to run all steps prior to this step
+	PREVIOUS_IMAGE="${BUILD_ROOT}/${IMAGE_NAME}"
+	for STEPFILE in ${BUILD_ROOT}/steps/*.sh; do
+    	    CSTEP=`basename "${STEPFILE}" .sh`
+    	    CIMAGE_LINK="${BUILD_ROOT}/${IBN}--${CSTEP}.img"
+	    if [ "${CSTEP}" == "${STEP}" ]; then
+		break
+	    fi
+    	    if [ ! -f "${CIMAGE_LINK}" ]; then
+		${BUILD_ROOT}/scripts/run_step "${STEPFILE}"
+    	    fi
+	    PREVIOUS_IMAGE="${CIMAGE_LINK}"
+	done
+
+	# Either copy the previous image or create a link to it
+	if [ ${ARCHIVE} -eq 0 ]; then
+	    echo "Linking image ${PREVIOUS_IMAGE} to ${IMAGE_LINK}"
+	    ln -s "${PREVIOUS_IMAGE}" "${IMAGE_LINK}"
+	else
+	    echo "Copying image ${PREVIOUS_IMAGE} to ${IMAGE_LINK}"
+	    cp "${PREVIOUS_IMAGE}" "${IMAGE_LINK}"
+	fi
+    fi
+fi
+
+# Mount the image if necessary
+LOOP=`${BUILD_ROOT}/scripts/mount_image ${IMAGE_LINK}`
+
+# Should we actually run the script, or just mount the image?
+if [ ${CHROOT} == 1 ]; then
+    echo "Only chroot specified (-c). Executing a chroot shell. Exit or ctrl-d to get out of the shell."
     chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /bin/bash
     echo "Shell closed."
-elif [ "${SCRIPT}" == "-n" ]; then
+elif [ "${RUN}" == 0 ]; then
     echo "No chroot (-n) specified. Just executing a shell. Exit or ctrl-d to get out of the shell."
     /bin/bash
     echo "Shell closed."
+elif [[ "${SCRIPT}" == *"chroot"* ]]; then
+    echo "Sourcing ${SCRIPT} in chroot"
+    SCR=`basename "${SCRIPT}"`
+    cp ${SCRIPT} ${IMAGE_ROOT}/tmp
+    chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /usr/bin/env /tmp/${SCR}
+    rm ${IMAGE_ROOT}/tmp/${SCR}
+    echo "Completed ${SCRIPT}"
 else
-    # Does this script require chroot?
-    if [[ "${SCRIPT}" == *"chroot"* ]]; then
-	SCR=`basename "${SCRIPT}"`
-	cp ${SCRIPT} ${IMAGE_ROOT}/tmp
-	echo "Sourcing ${SCRIPT} in chroot"
-	chroot "${IMAGE_ROOT}"/ /usr/bin/qemu-arm-static /usr/bin/env /tmp/${SCR}
-	rm ${IMAGE_ROOT}/tmp/${SCR}
-	echo "Completed ${SCRIPT}"
-    else
-	echo "Sourcing ${SCRIPT}"
-	source ${SCRIPT}
-	echo "Completed ${SCRIPT}"
-    fi
+    echo "Sourcing ${SCRIPT}"
+    source ${SCRIPT}
+    echo "Completed ${SCRIPT}"
 fi
 
 # Ensure we're not in the mounted directories
