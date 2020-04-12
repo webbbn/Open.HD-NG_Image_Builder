@@ -12,7 +12,8 @@ export INITIAL_IMAGE_SIZE=6000M
 
 # Download location base image
 #export BASE_IMAGE_URL="http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-09-30/2019-09-26-raspbian-buster-lite.zip"
-export BASE_IMAGE_URL=https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2020-02-13/2020-02-13-raspbian-buster-lite.zip"
+#export BASE_IMAGE_URL=https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2020-02-13/2020-02-13-raspbian-buster-lite.zip"
+export BASE_IMAGE_URL=http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2020-02-14/2020-02-13-raspbian-buster-lite.zip
 
 # File name base image
 export BASE_IMAGE="2020-02-13-raspbian-buster-lite"

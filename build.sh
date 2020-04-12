@@ -23,7 +23,7 @@ ${BUILD_ROOT}/scripts/prepare_image | tee -a ${BUILD_LOG}
 
 # Loop through all the build steps
 for SCRIPT in steps/*.sh; do
-    ${BUILD_ROOT}/scripts/run_step -a ${SCRIPT} | tee -a ${BUILD_LOG}
+    ${BUILD_ROOT}/scripts/run_step ${SCRIPT} | tee -a ${BUILD_LOG}
 done
 
 # Shrink the image to reduce the size

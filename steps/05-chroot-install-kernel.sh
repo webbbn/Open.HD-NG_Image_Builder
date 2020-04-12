@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KERNELS_URL=https://github.com/webbbn/Open.HD-Kernel-Builder/suites/374213945/artifacts/839463
+KERNELS_URL=https://github.com/webbbn/Open.HD-Kernel-Builder/releases/download/v0.9/kernels-2020-04-11.zip
 
 # Download the kernels
 cd /tmp
@@ -11,7 +11,7 @@ wget -O kernels.zip "${KERNELS_URL}"
 unzip kernels.zip
 
 # Install the kernels
-tar -C / -xf kernels/kernels.tar.gz
+tar -C / -xf kernels.tar.gz
 
 # Cleanup
 echo "Removing: kernels.zip and kernels"

@@ -42,11 +42,11 @@ pip3 install pyric
 pip3 install pymavlink
 
 # Update the GL libraries to fix GLES support
-rm /usr/lib/arm-linux-gnueabihf/libEGL.so.1*
-sudo ln -s /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so
-sudo ln -s /usr/lib/arm-linux-gnueabihf/libEGL.so.1.1.0 /usr/lib/arm-linux-gnueabihf/libEGL.so.1.1
-sudo ln -s /usr/lib/arm-linux-gnueabihf/libEGL.so.1.1 /usr/lib/arm-linux-gnueabihf/libEGL.so.1
-sudo ln -s /usr/lib/arm-linux-gnueabihf/libEGL.so.1 /usr/lib/arm-linux-gnueabihf/libEGL.so
-sudo ln -s /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so.1.1.0
-sudo ln -s /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.0.0
-sudo ln -s /opt/vc/lib/libbrcmGLESv2.so /opt/vc/lib/libGLESv2.so
+# rm /usr/lib/arm-linux-gnueabihf/libEGL.so.1*
+# sudo ln -s /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so
+# sudo ln -s /usr/lib/arm-linux-gnueabihf/libEGL.so.1.1.0 /usr/lib/arm-linux-gnueabihf/libEGL.so.1.1
+# sudo ln -s /usr/lib/arm-linux-gnueabihf/libEGL.so.1.1 /usr/lib/arm-linux-gnueabihf/libEGL.so.1
+# sudo ln -s /usr/lib/arm-linux-gnueabihf/libEGL.so.1 /usr/lib/arm-linux-gnueabihf/libEGL.so
+# sudo ln -s /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so.1.1.0
+# sudo ln -s /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.0.0
+# sudo ln -s /opt/vc/lib/libbrcmGLESv2.so /opt/vc/lib/libGLESv2.so
